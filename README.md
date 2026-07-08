@@ -1,32 +1,32 @@
-# Hướng dẫn cài đặt RAG Chatbot Demo (Windows)
+# RAG Chatbot Demo Setup Guide (Windows)
 
-Hướng dẫn này dành cho người mới, làm theo từng bước, không bỏ bước nào.
+This guide is for beginners. Follow every step in order, don't skip any.
 
 ---
 
-## Bước 0: Kiểm tra đã có Python chưa
+## Step 0: Check if Python is already installed
 
-Mở **PowerShell** (bấm Start, gõ "PowerShell", Enter), chạy:
+Open **PowerShell** (click Start, type "PowerShell", press Enter), then run:
 
 ```powershell
 python --version
 ```
 
-- Nếu hiện `Python 3.10.x` hoặc cao hơn (3.10, 3.11, 3.12) → bỏ qua, sang Bước 1.
-- Nếu hiện lỗi "không tìm thấy lệnh python" → cài Python tại https://www.python.org/downloads/
-  - **Quan trọng khi cài**: tick chọn ô **"Add Python to PATH"** ở màn hình đầu tiên của installer, nếu không các lệnh sau sẽ không chạy được.
-  - Cài xong, **đóng và mở lại PowerShell** rồi chạy lại lệnh kiểm tra trên.
+- If it shows `Python 3.10.x` or higher (3.10, 3.11, 3.12) → skip ahead to Step 1.
+- If it shows an error like "python is not recognized" → install Python from https://www.python.org/downloads/
+  - **Important during install**: check the box **"Add Python to PATH"** on the first screen of the installer, otherwise the commands below won't work.
+  - After installing, **close and reopen PowerShell**, then re-run the check command above.
 
 ---
 
-## Bước 1: Copy toàn bộ file project vào máy
+## Step 1: Copy all project files onto your machine
 
-Tạo 1 folder ở vị trí dễ tìm, ví dụ `C:\rag-chatbot-demo`, và copy toàn bộ các file mình đã chuẩn bị vào đó. Cấu trúc folder sẽ như sau:
+Create a folder somewhere easy to find, e.g. `C:\rag-chatbot-demo`, and copy all the prepared files into it. The folder structure should look like this:
 
 ```
 rag-chatbot-demo/
 ├── data/
-│   └── pdfs/              ← copy file PDF/Word của bạn vào đây
+│   └── pdfs/              ← copy your PDF/Word files in here
 ├── app.py
 ├── document_processor.py
 ├── ingest.py
@@ -34,88 +34,88 @@ rag-chatbot-demo/
 ├── vector_store.py
 ├── requirements.txt
 ├── .env.example
-└── README.md (hướng dẫn này)
+└── README.md (this guide)
 ```
 
 ---
 
-## Bước 2: Mở PowerShell tại đúng folder project
+## Step 2: Open PowerShell in the project folder
 
-Cách nhanh nhất: mở **File Explorer**, vào folder `rag-chatbot-demo`, gõ `powershell` vào ô địa chỉ (thanh đường dẫn ở trên), Enter. PowerShell sẽ mở sẵn tại đúng folder này.
+The fastest way: open **File Explorer**, navigate to the `rag-chatbot-demo` folder, type `powershell` into the address bar (the path bar at the top), and press Enter. PowerShell will open directly in this folder.
 
-Kiểm tra lại bằng lệnh:
+Verify with:
 
 ```powershell
 dir
 ```
 
-Phải thấy danh sách các file như `app.py`, `requirements.txt`...
+You should see files like `app.py`, `requirements.txt`, etc.
 
 ---
 
-## Bước 3: Tạo môi trường Python riêng (virtual environment)
+## Step 3: Create a dedicated Python virtual environment
 
-Đây là bước **quan trọng**, giúp các thư viện của project này không xung đột với phần mềm khác trên máy bạn.
+This is an **important** step — it keeps this project's libraries from conflicting with other software on your machine.
 
 ```powershell
 python -m venv venv
 ```
 
-Lệnh này tạo 1 folder `venv` chứa Python riêng cho project. Chạy xong, **kích hoạt** nó:
+This creates a `venv` folder containing a Python environment dedicated to this project. Once it's done, **activate** it:
 
 ```powershell
 .\venv\Scripts\Activate
 ```
 
-Sau khi chạy, đầu dòng lệnh PowerShell sẽ hiện `(venv)` ở phía trước — đây là dấu hiệu môi trường đã được kích hoạt đúng.
+After running this, you should see `(venv)` at the start of the PowerShell prompt — this confirms the environment is active.
 
-**Lỗi thường gặp**: nếu PowerShell báo lỗi liên quan đến "execution policy", chạy lệnh sau rồi thử kích hoạt lại:
+**Common error**: if PowerShell reports an "execution policy" error, run the following and then try activating again:
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
-Chọn `Y` (Yes) khi được hỏi xác nhận.
+Choose `Y` (Yes) when prompted to confirm.
 
-> **Lưu ý**: mỗi lần mở PowerShell mới để làm việc với project này, bạn cần chạy lại lệnh `.\venv\Scripts\Activate` (Bước 3) trước khi chạy bất kỳ lệnh Python nào khác.
+> **Note**: every time you open a new PowerShell window to work on this project, you need to run `.\venv\Scripts\Activate` (Step 3) again before running any other Python commands.
 
 ---
 
-## Bước 4: Cài đặt các thư viện cần thiết
+## Step 4: Install the required libraries
 
-Đảm bảo bạn đang thấy `(venv)` ở đầu dòng lệnh (đã kích hoạt ở Bước 3), sau đó chạy:
+Make sure `(venv)` is showing at the start of the prompt (activated in Step 3), then run:
 
 ```powershell
 pip install -r requirements.txt
 ```
 
-Lệnh này sẽ tự động cài tất cả thư viện cần thiết (anthropic, chromadb, streamlit...). Quá trình này mất khoảng **3-7 phút** tùy tốc độ mạng, vì có một số thư viện khá nặng (sentence-transformers).
+This automatically installs all required libraries (anthropic, chromadb, streamlit, etc.). This takes about **3-7 minutes** depending on your network speed, since some libraries are fairly large (sentence-transformers).
 
-Nếu thấy dòng cuối cùng có dạng `Successfully installed ...` → cài đặt thành công.
+If the last line reads `Successfully installed ...` → the install succeeded.
 
 ---
 
-## Bước 5: Lấy và cấu hình Anthropic API key
+## Step 5: Get and configure your Anthropic API key
 
-1. Nếu chưa có key, làm theo hướng dẫn lấy key tại console.anthropic.com (đã hướng dẫn ở phần chat trước).
-2. Trong folder project, copy file `.env.example` thành file mới tên là `.env` (chỉ cần đổi tên, bỏ phần `.example`).
-3. Mở file `.env` bằng Notepad, thay dòng:
+1. If you don't have a key yet, follow the instructions to get one at console.anthropic.com (covered earlier in chat).
+2. In the project folder, copy the `.env.example` file to a new file named `.env` (just rename it, dropping the `.example` part).
+3. Open the `.env` file with Notepad and replace the line:
    ```
    ANTHROPIC_API_KEY=sk-ant-your-key-here
    ```
-   bằng key thật của bạn, ví dụ:
+   with your real key, for example:
    ```
    ANTHROPIC_API_KEY=sk-ant-api03-xxxxxxxxxxxxxxxxxxxx
    ```
-4. Lưu file lại.
+4. Save the file.
 
-**Lưu ý bảo mật**: không chia sẻ file `.env` này cho ai, không đăng lên mạng hay gửi qua chat.
+**Security note**: don't share this `.env` file with anyone, and don't post it online or send it in chat.
 
 ---
 
-## Bước 6: Copy file PDF/Word của bạn vào đúng vị trí
+## Step 6: Copy your PDF/Word files into the right place
 
-Copy 5-10 file PDF (hoặc .docx) bạn muốn dùng cho demo vào folder:
+Copy the 5-10 PDF (or .docx) files you want to use for the demo into:
 
 ```
 rag-chatbot-demo/data/pdfs/
@@ -123,63 +123,63 @@ rag-chatbot-demo/data/pdfs/
 
 ---
 
-## Bước 7: Nạp tài liệu vào vector database
+## Step 7: Ingest documents into the vector database
 
-Vẫn trong PowerShell (đã activate venv), chạy:
+Still in PowerShell (with venv activated), run:
 
 ```powershell
 python ingest.py
 ```
 
-- Lần đầu chạy, script sẽ tự **download embedding model** (~80MB), có thể mất 1-2 phút tùy mạng.
-- Sau đó script đọc từng file, chia chunk, và lưu vào vector database (folder `chroma_db` sẽ tự được tạo).
-- Khi xong, bạn sẽ thấy dòng `✅ HOÀN TẤT`.
+- On the first run, the script will automatically **download the embedding model** (~80MB), which can take 1-2 minutes depending on your network.
+- It then reads each file, splits it into chunks, and stores it in the vector database (the `chroma_db` folder will be created automatically).
+- When finished, you'll see the line `✅ HOÀN TẤT` ("DONE").
 
-**Mỗi khi bạn thêm tài liệu mới vào folder `data/pdfs`, chạy lại lệnh này** để cập nhật vector database.
+**Every time you add new documents to the `data/pdfs` folder, re-run this command** to update the vector database.
 
 ---
 
-## Bước 8: Chạy chatbot
+## Step 8: Run the chatbot
 
 ```powershell
 streamlit run app.py
 ```
 
-Lệnh này sẽ tự mở trình duyệt với chatbot tại địa chỉ `http://localhost:8501`. Nếu không tự mở, copy địa chỉ đó dán vào trình duyệt.
+This automatically opens a browser window with the chatbot at `http://localhost:8501`. If it doesn't open automatically, copy that address into your browser.
 
-Giờ bạn có thể chat hỏi về nội dung các file PDF/Word đã nạp.
+You can now chat and ask questions about the content of the PDF/Word files you ingested.
 
-Để dừng chatbot, quay lại PowerShell, bấm `Ctrl + C`.
+To stop the chatbot, go back to PowerShell and press `Ctrl + C`.
 
 ---
 
-## Các lỗi thường gặp
+## Common issues
 
-| Lỗi | Nguyên nhân khả năng cao | Cách xử lý |
+| Error | Likely cause | Fix |
 |---|---|---|
-| `ModuleNotFoundError: No module named 'anthropic'` | Chưa activate venv, hoặc chưa chạy `pip install -r requirements.txt` | Chạy lại Bước 3 và Bước 4 |
-| `authentication_error` khi chat | API key sai hoặc chưa add thẻ thanh toán trên console.anthropic.com | Kiểm tra lại file `.env`, kiểm tra billing trên console |
-| Vector DB báo 0 chunk | Chưa chạy `python ingest.py`, hoặc file PDF là dạng scan ảnh không trích xuất được text | Chạy `python ingest.py`, kiểm tra PDF có phải dạng scan không |
-| PowerShell báo lỗi "execution policy" khi activate venv | Windows chặn chạy script theo mặc định | Chạy lệnh `Set-ExecutionPolicy` ở Bước 3 |
-| Chatbot trả lời "không tìm thấy thông tin" dù tài liệu có | Câu hỏi quá khác cách diễn đạt trong tài liệu, hoặc ngưỡng `DISTANCE_THRESHOLD` trong `rag_chat.py` đang quá chặt | Thử hỏi câu khác gần với từ ngữ trong tài liệu, hoặc tăng giá trị `DISTANCE_THRESHOLD` trong file `rag_chat.py` |
+| `ModuleNotFoundError: No module named 'anthropic'` | venv not activated, or `pip install -r requirements.txt` not run yet | Redo Step 3 and Step 4 |
+| `authentication_error` when chatting | Wrong API key, or no payment method added on console.anthropic.com | Check the `.env` file, check billing on the console |
+| Vector DB reports 0 chunks | `python ingest.py` hasn't been run, or the PDF is a scanned image with no extractable text | Run `python ingest.py`, check whether the PDF is a scanned image |
+| PowerShell "execution policy" error when activating venv | Windows blocks running scripts by default | Run the `Set-ExecutionPolicy` command from Step 3 |
+| Chatbot replies "information not found" even though the document has it | The question is phrased very differently from the document, or the `DISTANCE_THRESHOLD` in `rag_chat.py` is too strict | Try rephrasing the question closer to the document's wording, or increase the `DISTANCE_THRESHOLD` value in `rag_chat.py` |
 
 ---
 
-## Cấu trúc code, nếu bạn muốn tìm hiểu/sửa
+## Code structure, if you want to explore/modify it
 
-- `document_processor.py` — đọc PDF/Word, chia chunk
-- `vector_store.py` — vector hóa và lưu/tìm trong Chroma
-- `ingest.py` — script chạy 1 lần để nạp tài liệu (chạy lại khi có file mới)
-- `rag_chat.py` — ghép retrieval + gọi Claude, có system prompt chống bịa thông tin
-- `chat_history.py` — quản lý lưu trữ các cuộc trò chuyện (sessions) vào file `chat_sessions.db`
-- `inspect_db.py` — script tiện ích để xem nội dung đã nạp vào vector DB
-- `app.py` — UI chat Streamlit đa phiên (giống Claude/ChatGPT), đây là file chạy chính khi dùng chatbot
+- `document_processor.py` — reads PDF/Word files, splits them into chunks
+- `vector_store.py` — embeds and stores/searches vectors in Chroma
+- `ingest.py` — one-off script to ingest documents (re-run when there are new files)
+- `rag_chat.py` — combines retrieval + calling Claude, with a system prompt that guards against making up information
+- `chat_history.py` — manages storing conversations (sessions) in the `chat_sessions.db` file
+- `inspect_db.py` — utility script to inspect what's been ingested into the vector DB
+- `app.py` — multi-session Streamlit chat UI (similar to Claude/ChatGPT), this is the main file you run to use the chatbot
 
-## Về tính năng lưu nhiều cuộc trò chuyện (giống Claude/ChatGPT)
+## About the multi-conversation history feature (similar to Claude/ChatGPT)
 
-- Mỗi cuộc trò chuyện được lưu vào file **`chat_sessions.db`** (tự động tạo trong folder project, dùng SQLite — khác hoàn toàn với vector database `chroma_db`)
-- Lịch sử **lưu vĩnh viễn**: tắt Streamlit, tắt máy, mở lại vẫn còn nguyên
-- Sidebar bên trái hiển thị danh sách cuộc trò chuyện, sắp xếp theo lần dùng gần nhất, có nút **➕ tạo mới** và **🗑️ xoá**
-- Tên cuộc trò chuyện được **tự đặt theo câu hỏi đầu tiên** bạn gửi trong session đó
+- Each conversation is stored in a **`chat_sessions.db`** file (created automatically in the project folder, using SQLite — completely separate from the `chroma_db` vector database)
+- History is **saved permanently**: close Streamlit, restart your computer, reopen it — it's all still there
+- The left sidebar shows the list of conversations, sorted by most recently used, with **➕ new** and **🗑️ delete** buttons
+- Each conversation's name is **automatically set from the first question** you send in that session
 
-**Muốn xoá hết lịch sử chat để làm lại từ đầu?** Đóng Streamlit lại, xoá file `chat_sessions.db` trong folder project, rồi chạy lại `streamlit run app.py` — file sẽ tự được tạo mới, rỗng.
+**Want to clear all chat history and start fresh?** Close Streamlit, delete the `chat_sessions.db` file in the project folder, then run `streamlit run app.py` again — the file will be recreated automatically, empty.
