@@ -25,13 +25,18 @@ Create a folder somewhere easy to find, e.g. `C:\rag-chatbot-demo`, and copy all
 
 ```
 rag-chatbot-demo/
+├── rag_chatbot/            ← core library package
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── chat_history.py
+│   ├── document_processor.py
+│   ├── rag_chat.py
+│   └── vector_store.py
 ├── data/
 │   └── pdfs/              ← copy your PDF/Word files in here
 ├── app.py
-├── document_processor.py
 ├── ingest.py
-├── rag_chat.py
-├── vector_store.py
+├── inspect_db.py
 ├── requirements.txt
 ├── .env.example
 └── README.md (this guide)
@@ -161,19 +166,25 @@ To stop the chatbot, go back to PowerShell and press `Ctrl + C`.
 | `authentication_error` when chatting | Wrong API key, or no payment method added on console.anthropic.com | Check the `.env` file, check billing on the console |
 | Vector DB reports 0 chunks | `python ingest.py` hasn't been run, or the PDF is a scanned image with no extractable text | Run `python ingest.py`, check whether the PDF is a scanned image |
 | PowerShell "execution policy" error when activating venv | Windows blocks running scripts by default | Run the `Set-ExecutionPolicy` command from Step 3 |
-| Chatbot replies "information not found" even though the document has it | The question is phrased very differently from the document, or the `DISTANCE_THRESHOLD` in `rag_chat.py` is too strict | Try rephrasing the question closer to the document's wording, or increase the `DISTANCE_THRESHOLD` value in `rag_chat.py` |
+| Chatbot replies "information not found" even though the document has it | The question is phrased very differently from the document, or the `DISTANCE_THRESHOLD` in `rag_chatbot/rag_chat.py` is too strict | Try rephrasing the question closer to the document's wording, or increase the `DISTANCE_THRESHOLD` value in `rag_chatbot/rag_chat.py` |
 
 ---
 
 ## Code structure, if you want to explore/modify it
 
-- `document_processor.py` — reads PDF/Word files, splits them into chunks
-- `vector_store.py` — embeds and stores/searches vectors in Chroma
-- `ingest.py` — one-off script to ingest documents (re-run when there are new files)
-- `rag_chat.py` — combines retrieval + calling Claude, with a system prompt that guards against making up information
-- `chat_history.py` — manages storing conversations (sessions) in the `chat_sessions.db` file
-- `inspect_db.py` — utility script to inspect what's been ingested into the vector DB
+Entry-point scripts (run these directly):
+
 - `app.py` — multi-session Streamlit chat UI (similar to Claude/ChatGPT), this is the main file you run to use the chatbot
+- `ingest.py` — one-off script to ingest documents (re-run when there are new files)
+- `inspect_db.py` — utility script to inspect what's been ingested into the vector DB
+
+Core library (`rag_chatbot/` package):
+
+- `rag_chatbot/document_processor.py` — reads PDF/Word files, splits them into chunks
+- `rag_chatbot/vector_store.py` — embeds and stores/searches vectors in Chroma
+- `rag_chatbot/rag_chat.py` — combines retrieval + calling Claude, with a system prompt that guards against making up information
+- `rag_chatbot/auth.py` — user authentication, sessions, and admin approval
+- `rag_chatbot/chat_history.py` — manages storing conversations (sessions) in the `chat_sessions.db` file
 
 ## About the multi-conversation history feature (similar to Claude/ChatGPT)
 

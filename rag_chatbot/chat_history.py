@@ -17,7 +17,7 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent / "chat_sessions.db"
+DB_PATH = Path(__file__).resolve().parent.parent / "chat_sessions.db"
 
 
 def get_connection():

@@ -142,7 +142,7 @@ def process_folder(folder_path: str) -> list[dict]:
 
 if __name__ == "__main__":
     # Chạy thử nghiệm: đọc thư mục data/pdfs và in ra kết quả
-    folder = os.path.join(os.path.dirname(__file__), "data", "pdfs")
+    folder = os.path.join(os.path.dirname(__file__), "..", "data", "pdfs")
     results = process_folder(folder)
     print(f"\n=== Tổng cộng: {len(results)} chunks từ tất cả tài liệu ===")
     if results:

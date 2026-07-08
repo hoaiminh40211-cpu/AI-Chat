@@ -7,7 +7,7 @@ Query pipeline: retrieval + generation, có lọc tài liệu theo nhóm user.
 import os
 from anthropic import Anthropic
 from dotenv import load_dotenv
-from vector_store import search_relevant_chunks, DISTANCE_THRESHOLD
+from .vector_store import search_relevant_chunks, DISTANCE_THRESHOLD
 
 load_dotenv()
 client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))

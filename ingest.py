@@ -16,8 +16,8 @@ Cách chạy:
 
 import os
 from pathlib import Path
-from document_processor import process_folder
-from vector_store import add_chunks_to_store, get_collection_count
+from rag_chatbot.document_processor import process_folder
+from rag_chatbot.vector_store import add_chunks_to_store, get_collection_count
 
 BASE_FOLDER = Path(__file__).parent / "data" / "pdfs"
 

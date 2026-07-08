@@ -12,7 +12,7 @@ Cách chạy:
     python inspect_db.py
 """
 
-from vector_store import get_chroma_collection
+from rag_chatbot.vector_store import get_chroma_collection
 
 
 def main():

@@ -12,11 +12,11 @@ Chạy: streamlit run app.py
 """
 
 import streamlit as st
-import auth
-import chat_history as history
-from rag_chat import ask
-from vector_store import get_collection_count, get_groups_summary
-from auth import (
+from rag_chatbot import auth
+from rag_chatbot import chat_history as history
+from rag_chatbot.rag_chat import ask
+from rag_chatbot.vector_store import get_collection_count, get_groups_summary
+from rag_chatbot.auth import (
     login, register_user, get_current_user, is_admin,
     get_user_groups, list_users, approve_user, reject_user,
     update_user_groups, delete_user, VALID_GROUPS, GROUP_LABELS,

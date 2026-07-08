@@ -22,7 +22,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-DB_PATH = Path(__file__).parent / "users.db"
+DB_PATH = Path(__file__).resolve().parent.parent / "users.db"
 
 # Nhóm hợp lệ trong hệ thống
 VALID_GROUPS = ["chung", "kinh_doanh", "ky_thuat", "nhan_su", "admin"]
